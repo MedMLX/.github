@@ -1,6 +1,4 @@
 """Convert text to SVG path data with HarfBuzz shaping, so wordmarks need no installed fonts."""
-from pathlib import Path
-
 import uharfbuzz as hb
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen

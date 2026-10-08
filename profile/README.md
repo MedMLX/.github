@@ -1,7 +1,9 @@
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="../brand/banner-dark.svg">
-  <img alt="MedMLX: native medical imaging models on Apple Silicon" src="../brand/banner-light.svg" width="100%">
-</picture>
+<p>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="../brand/banner-dark.svg">
+    <img alt="MedMLX: native medical imaging models on Apple Silicon" src="../brand/banner-light.svg" width="100%">
+  </picture>
+</p>
 
 MedMLX reimplements published medical imaging models in [MLX](https://github.com/ml-explore/mlx) so they run natively on Apple Silicon, with no PyTorch or CUDA in the inference path. The ports cover segmentation, detection, generation, and vision-language models.
 

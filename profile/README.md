@@ -18,3 +18,6 @@ MedMLX reimplements published medical imaging models in [MLX](https://github.com
 MedMLX is research software. It is not a medical device and is not for clinical use. Agreement with a reference implementation shows that a port reproduces the original model's outputs. It does not establish clinical validity.
 
 MedMLX is an independent project and is not affiliated with Apple.
+
+MedMLX uses Apache-2.0 for its own code and retains existing MIT and other
+upstream licenses. Model weights and datasets retain their own terms.

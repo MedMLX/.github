@@ -2,7 +2,7 @@
 
 ## Mark
 
-The mark is a 3×3 grid of voxels. The plus-shaped cells are a segmentation mask and the center cell is the voxel in focus. Keep at least one voxel width of clear space around it, and do not draw it in red.
+The mark is a 3×3 grid of voxels. The plus-shaped cells are a segmentation mask and the center cell is the voxel in focus. Keep at least one voxel width of clear space around it, and draw it only in black, white and gray.
 
 | File | Use |
 |---|---|
@@ -17,15 +17,15 @@ The mark is a 3×3 grid of voxels. The plus-shaped cells are a segmentation mask
 
 | Name | Hex | Use |
 |---|---|---|
-| Ink | `#0B1016` | Dark background, text on light |
-| Bone | `#ECE8E1` | Text on dark, center voxel on dark |
-| Signal | `#36D1B9` | Mask and accent on dark |
-| Signal deep | `#0D7F70` | Mask and accent on light (4.5:1 on Paper) |
-| Slate | `#1F2933` | Background voxels on dark |
-| Mist | `#DDE2E5` | Background voxels on light |
-| Paper | `#F7F6F3` | Light background |
-| Muted on dark | `#9AA3AD` | Secondary text on Ink |
-| Muted on light | `#56606B` | Secondary text on Paper |
+| Black | `#0A0A0A` | Dark background, text and mask on light |
+| White | `#FFFFFF` | Light background, text and mask on dark |
+| Gray | `#8E8E93` | Center voxel |
+| Graphite | `#262626` | Background voxels on dark |
+| Silver | `#E5E5E5` | Background voxels on light, rules on light |
+| Muted on dark | `#A1A1A6` | Secondary text on Black |
+| Muted on light | `#6E6E73` | Secondary text on White |
+
+There is no accent color.
 
 ## Type
 
@@ -33,7 +33,7 @@ IBM Plex Sans SemiBold for the wordmark and titles, IBM Plex Sans Regular for bo
 
 ## Banner image
 
-The CT slice in the banner and social cards is synthetic. `tools/phantom.py` draws it from hand-placed ellipses and uses no patient data. The teal region is a liver mask. Its center voxel and four neighbors repeat the mark. The light version prints the slice as a negative.
+The CT slice in the banner and social cards is synthetic. `tools/phantom.py` draws it from hand-placed ellipses and uses no patient data. The white region (black on light) is a liver mask. Its center voxel and four neighbors repeat the mark. The light version prints the slice as a negative.
 
 ## Regenerating
 

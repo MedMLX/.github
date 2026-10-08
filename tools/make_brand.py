@@ -34,24 +34,24 @@ FONT_URLS = {
     "mono": "https://github.com/google/fonts/raw/main/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
 }
 
-# Palette
-INK = "#0B1016"
-SLATE = "#1F2933"
-BONE = "#ECE8E1"
-SIGNAL = "#36D1B9"
-SIGNAL_DEEP = "#0D7F70"
-PAPER = "#F7F6F3"
-MIST = "#DDE2E5"
-MUTED_ON_DARK = "#9AA3AD"
-MUTED_ON_LIGHT = "#56606B"
-CT_LOW = "#0E151C"  # darkest CT gray; CT_LOW..BONE is the scan grayscale on dark
-PRINT_LOW = "#E6E3DD"  # on light, the scan is printed as a negative: PRINT_LOW..INK
+# Palette: black, white and neutral grays only.
+BLACK = "#0A0A0A"
+GRAPHITE = "#262626"
+GRAY = "#8E8E93"
+SILVER = "#E5E5E5"
+WHITE = "#FFFFFF"
+MUTED_ON_DARK = "#A1A1A6"
+MUTED_ON_LIGHT = "#6E6E73"
+CT_LOW = "#141414"  # darkest CT gray on dark
+CT_HIGH = "#ADADAD"  # brightest CT gray, kept below white so the mask stands out
+PRINT_LOW = "#EDEDED"  # on light, the scan is printed as a negative: PRINT_LOW..PRINT_HIGH
+PRINT_HIGH = "#8A8A8A"
 
 THEMES = {
-    "dark": dict(bg=INK, fg=BONE, muted=MUTED_ON_DARK, accent=SIGNAL,
-                 on=SIGNAL, center=BONE, off=SLATE, air=(BONE, 0.05), scan=(CT_LOW, BONE)),
-    "light": dict(bg=PAPER, fg=INK, muted=MUTED_ON_LIGHT, accent=SIGNAL_DEEP,
-                  on=SIGNAL_DEEP, center=INK, off=MIST, air=(INK, 0.05), scan=(PRINT_LOW, INK)),
+    "dark": dict(bg=BLACK, fg=WHITE, muted=MUTED_ON_DARK, accent=WHITE,
+                 on=WHITE, center=GRAY, off=GRAPHITE, air=(WHITE, 0.05), scan=(CT_LOW, CT_HIGH)),
+    "light": dict(bg=WHITE, fg=BLACK, muted=MUTED_ON_LIGHT, accent=BLACK,
+                  on=BLACK, center=GRAY, off=SILVER, air=(BLACK, 0.04), scan=(PRINT_LOW, PRINT_HIGH)),
 }
 
 # Mark geometry, in a 100-unit tile: a 3x3 voxel grid whose plus-shaped cells are
@@ -219,11 +219,11 @@ def voxel_field(theme, w, h, pitch, body_cx, body_cy, body_w, air_fade=None):
 # Assets
 
 def build_marks():
-    tile = (f'<rect width="100" height="100" rx="22" fill="{INK}"/>' + glyph("dark", PAD, PAD, GRID))
+    tile = (f'<rect width="100" height="100" rx="22" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID))
     write("mark.svg", svg_doc(100, 100, tile, "MedMLX"), png_scale=5.12)
     for theme in ("dark", "light"):
         write(f"mark-on-{theme}.svg", svg_doc(GRID, GRID, glyph(theme, 0, 0, GRID), "MedMLX"))
-    avatar = f'<rect width="100" height="100" fill="{INK}"/>' + glyph("dark", PAD, PAD, GRID)
+    avatar = f'<rect width="100" height="100" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID)
     write("avatar.png", svg_doc(100, 100, avatar, "MedMLX"), png_scale=10.24)
     for theme in ("dark", "light"):
         body, w = lockup(theme, 0, 0, 120)
@@ -240,13 +240,13 @@ def build_banners():
         mark, _ = lockup(theme, 96, 132, 104)
         body.append(mark)
         body.append(text("Native medical imaging models on Apple Silicon", 98, 318, 32, t["muted"])[0])
-        body.append(text("segmentation · detection · generation · vision-language", 98, 372, 19,
+        body.append(text("segmentation · detection · generation", 98, 372, 19,
                          t["accent"], kind="mono")[0])
         write(f"banner-{theme}.svg", svg_doc(W, H, "".join(body), "MedMLX: native medical imaging models on Apple Silicon"),
               png_scale=1)
 
 
-def social_card(name, description, path, theme="dark"):
+def social_card(name, description, path, theme="dark", footer=None):
     W, H = 1280, 640
     t = THEMES[theme]
     body = [f'<rect width="{W}" height="{H}" fill="{t["bg"]}"/>',
@@ -256,7 +256,7 @@ def social_card(name, description, path, theme="dark"):
         body.append(mark)
         body.append(text("Native medical imaging models", 76, 410, 36, t["muted"])[0])
         body.append(text("on Apple Silicon", 76, 456, 36, t["muted"])[0])
-        footer = "github.com/MedMLX"
+        footer = footer or "github.com/MedMLX"
     else:
         mark, _ = lockup(theme, 72, 64, 44)
         body.append(mark)
@@ -266,7 +266,7 @@ def social_card(name, description, path, theme="dark"):
         body.append(text(name, 70, 300, size, t["fg"], wght=600, tracking=-0.01)[0])
         for k, line in enumerate(wrap(description or "", 30, 640)[:3]):
             body.append(text(line, 72, 300 + 66 + k * 42, 30, t["muted"])[0])
-        footer = f"github.com/MedMLX/{name}"
+        footer = footer or f"github.com/MedMLX/{name}"
     body.append(text(footer, 72, 572, 22, t["accent"], kind="mono")[0])
     svg = svg_doc(W, H, "".join(body), name)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -289,6 +289,7 @@ def main():
     s.add_argument("--org", help="build a card for every repository in this GitHub organization")
     s.add_argument("--private", action="store_true", help="include private repositories with --org")
     s.add_argument("--out", type=Path, default=OUT / "social")
+    s.add_argument("--footer", help="replace the github.com link at the bottom of the card")
     a = p.parse_args()
     if a.cmd != "social":
         build_all()
@@ -296,13 +297,14 @@ def main():
     if a.org:
         res = subprocess.run(["gh", "repo", "list", a.org, "--limit", "500", "--json", "name,description,visibility"],
                              capture_output=True, text=True, check=True)
-        repos = [r for r in json.loads(res.stdout) if a.private or r["visibility"] == "PUBLIC"]
+        repos = [r for r in json.loads(res.stdout)
+                 if (a.private or r["visibility"] == "PUBLIC") and not r["name"].startswith(".")]
     elif a.repo:
         repos = [{"name": a.repo, "description": a.description}]
     else:
         p.error("social needs REPO or --org")
     for r in repos:
-        social_card(r["name"], r["description"], a.out / f"{r['name']}.png")
+        social_card(r["name"], r["description"], a.out / f"{r['name']}.png", footer=a.footer)
 
 
 if __name__ == "__main__":

@@ -5,9 +5,9 @@
   </picture>
 </p>
 
-MedMLX reimplements published medical imaging models in [MLX](https://github.com/ml-explore/mlx) so they run natively on Apple Silicon, with no PyTorch or CUDA in the inference path. The ports cover segmentation, detection, and generation models.
+MedMLX reimplements published medical imaging models in [MLX](https://github.com/ml-explore/mlx) so they run natively on Apple Silicon, with no PyTorch or CUDA in the inference path. The portfolio is being developed for segmentation, detection, and generation. Public model releases are listed below.
 
-### Repositories
+### Public model releases
 
 | Repository | Description |
 |---|---|
@@ -19,5 +19,6 @@ MedMLX is research software. It is not a medical device and is not for clinical 
 
 MedMLX is an independent project and is not affiliated with Apple.
 
-MedMLX uses Apache-2.0 for its own code and retains existing MIT and other
-upstream licenses. Model weights and datasets retain their own terms.
+Each repository specifies its applicable code and dependency licenses and
+retains upstream notices. Model weights and datasets have separate terms;
+check the selected model's documentation before use or redistribution.

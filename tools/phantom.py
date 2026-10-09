@@ -7,14 +7,14 @@ v runs top (anterior) to bottom (posterior). The body spans about u in [-0.94, 0
 import math
 
 
-def _ell(u, v, cx, cy, a, b, rot=0.0):
+def _ell(u: float, v: float, cx: float, cy: float, a: float, b: float, rot: float = 0.0) -> float:
     c, s = math.cos(rot), math.sin(rot)
     x, y = u - cx, v - cy
     xr, yr = c * x + s * y, -s * x + c * y
     return (xr / a) ** 2 + (yr / b) ** 2
 
 
-def tissue(u, v):
+def tissue(u: float, v: float) -> tuple[float | None, bool]:
     """Return (intensity in 0..1, in_liver_mask), or (None, False) outside the body."""
     body = _ell(u, v, 0, 0, 0.94, 0.64)
     if body > 1:
@@ -59,20 +59,23 @@ def tissue(u, v):
     return val, liver
 
 
-def _noise(r, c, seed):
+def _noise(r: int, c: int, seed: int) -> float:
     h = (r * 73856093) ^ (c * 19349663) ^ (seed * 83492791)
     h = (h ^ (h >> 13)) * 1274126177 & 0xFFFFFFFF
     return (h / 0xFFFFFFFF - 0.5) * 2  # -1..1
 
 
-def sample(cols, rows, center_col, center_row, voxel, seed=7, jitter=0.03):
+def sample(
+    cols: int, rows: int, center_col: float, center_row: float, voxel: float,
+    seed: int = 7, jitter: float = 0.03,
+) -> tuple[list[list[float | None]], list[list[bool]]]:
     """Sample the phantom on a cols x rows grid.
 
     center_col/center_row place the body center on the grid; voxel is the size of
     one grid cell in phantom units. Returns (values, mask) as nested lists, with
     None for air.
     """
-    vals = [[None] * cols for _ in range(rows)]
+    vals: list[list[float | None]] = [[None] * cols for _ in range(rows)]
     mask = [[False] * cols for _ in range(rows)]
     for r in range(rows):
         for c in range(cols):

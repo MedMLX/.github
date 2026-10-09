@@ -19,12 +19,13 @@ import subprocess
 import sys
 import urllib.request
 from pathlib import Path
+from typing import Literal, TypedDict, cast
 
 import cairosvg
 
 sys.path.insert(0, str(Path(__file__).parent))
-import phantom  # noqa: E402
-from textpath import cap_height, text_path  # noqa: E402
+import phantom
+from textpath import cap_height, text_path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "brand"
@@ -47,10 +48,45 @@ CT_HIGH = "#ADADAD"  # brightest CT gray, kept below white so the mask stands ou
 PRINT_LOW = "#EDEDED"  # on light, the scan is printed as a negative: PRINT_LOW..PRINT_HIGH
 PRINT_HIGH = "#8A8A8A"
 
-THEMES = {
-    "dark": dict(bg=BLACK, fg=WHITE, muted=MUTED_ON_DARK, accent=WHITE,
+type ThemeName = Literal["dark", "light"]
+type FontKind = Literal["sans", "mono"]
+
+
+class Theme(TypedDict):
+    bg: str
+    fg: str
+    muted: str
+    accent: str
+    on: str
+    center: str
+    off: str
+    air: tuple[str, float]
+    scan: tuple[str, str]
+
+
+class Repository(TypedDict):
+    name: str
+    description: str | None
+
+
+class ListedRepository(Repository):
+    visibility: str
+
+
+class Arguments(argparse.Namespace):
+    cmd: str | None
+    repo: str | None
+    description: str
+    org: str | None
+    private: bool
+    out: Path
+    footer: str | None
+
+
+THEMES: dict[ThemeName, Theme] = {
+    "dark": Theme(bg=BLACK, fg=WHITE, muted=MUTED_ON_DARK, accent=WHITE,
                  on=WHITE, center=GRAY, off=GRAPHITE, air=(WHITE, 0.05), scan=(CT_LOW, CT_HIGH)),
-    "light": dict(bg=WHITE, fg=BLACK, muted=MUTED_ON_LIGHT, accent=BLACK,
+    "light": Theme(bg=WHITE, fg=BLACK, muted=MUTED_ON_LIGHT, accent=BLACK,
                   on=BLACK, center=GRAY, off=SILVER, air=(BLACK, 0.04), scan=(PRINT_LOW, PRINT_HIGH)),
 }
 
@@ -61,7 +97,7 @@ CELL = (100 - 2 * PAD - 2 * GAP) / 3
 GRID = 100 - 2 * PAD  # 60
 
 
-def font(kind):
+def font(kind: FontKind) -> str:
     path = FONT_DIR / FONT_URLS[kind].rsplit("/", 1)[1].replace("%5B", "[").replace("%5D", "]")
     if not path.exists():
         FONT_DIR.mkdir(exist_ok=True)
@@ -69,17 +105,17 @@ def font(kind):
     return str(path)
 
 
-def num(v):
+def num(v: float) -> str:
     return f"{v:.2f}".rstrip("0").rstrip(".")
 
 
-def svg_doc(w, h, body, title):
+def svg_doc(w: float, h: float, body: str, title: str) -> str:
     return (f'<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" '
             f'width="{num(w)}" height="{num(h)}" viewBox="0 0 {num(w)} {num(h)}" role="img">'
             f"<title>{title}</title>{body}</svg>\n")
 
 
-def write(name, svg, png_scale=None):
+def write(name: str, svg: str, png_scale: float | None = None) -> None:
     OUT.mkdir(exist_ok=True)
     path = OUT / name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -93,11 +129,11 @@ def write(name, svg, png_scale=None):
 
 # Mark and wordmark
 
-def glyph(theme, x, y, size):
+def glyph(theme: ThemeName, x: float, y: float, size: float) -> str:
     """The 3x3 voxel grid, drawn into a size x size box at (x, y)."""
     t = THEMES[theme]
     s = size / GRID
-    out = []
+    out: list[str] = []
     for i in range(3):
         for j in range(3):
             if i == j == 1:
@@ -111,14 +147,14 @@ def glyph(theme, x, y, size):
     return "".join(out)
 
 
-def wordmark(theme, x, baseline, cap):
+def wordmark(theme: ThemeName, x: float, baseline: float, cap: float) -> tuple[str, float]:
     sans = font("sans")
     size = cap / cap_height(sans, 1, 600)
     d, w = text_path(sans, "MedMLX", size, wght=600, tracking=-0.01, x=x, y=baseline)
     return f'<path d="{d}" fill="{THEMES[theme]["fg"]}"/>', w
 
 
-def lockup(theme, x, y, hm):
+def lockup(theme: ThemeName, x: float, y: float, hm: float) -> tuple[str, float]:
     """Mark plus wordmark. (x, y) is the top left of the mark; returns (svg, width)."""
     cap = hm / 1.45
     gap = 0.34 * hm
@@ -126,13 +162,17 @@ def lockup(theme, x, y, hm):
     return glyph(theme, x, y, hm) + word, hm + gap + w
 
 
-def text(s, x, y, size, fill, kind="sans", wght=400, tracking=0.0):
+def text(
+    s: str, x: float, y: float, size: float, fill: str, kind: FontKind = "sans",
+    wght: float = 400, tracking: float = 0.0,
+) -> tuple[str, float]:
     d, w = text_path(font(kind), s, size, wght=wght, tracking=tracking, x=x, y=y)
     return f'<path d="{d}" fill="{fill}"/>', w
 
 
-def wrap(s, size, max_w, wght=400):
-    lines, cur = [], ""
+def wrap(s: str, size: float, max_w: float, wght: float = 400) -> list[str]:
+    lines: list[str] = []
+    cur = ""
     for word in s.split():
         trial = f"{cur} {word}".strip()
         if cur and text_path(font("sans"), trial, size, wght=wght)[1] > max_w:
@@ -147,18 +187,21 @@ def wrap(s, size, max_w, wght=400):
 
 # Voxel CT slice
 
-def _mix(a, b, t):
-    a = [int(a[i:i + 2], 16) for i in (1, 3, 5)]
-    b = [int(b[i:i + 2], 16) for i in (1, 3, 5)]
-    return "#" + "".join(f"{round(p + (q - p) * t):02X}" for p, q in zip(a, b))
+def _mix(a: str, b: str, t: float) -> str:
+    channels_a = [int(a[i:i + 2], 16) for i in (1, 3, 5)]
+    channels_b = [int(b[i:i + 2], 16) for i in (1, 3, 5)]
+    return "#" + "".join(f"{round(p + (q - p) * t):02X}" for p, q in zip(channels_a, channels_b))
 
 
-def _smooth(e0, e1, x):
+def _smooth(e0: float, e1: float, x: float) -> float:
     t = min(1.0, max(0.0, (x - e0) / (e1 - e0)))
     return t * t * (3 - 2 * t)
 
 
-def voxel_field(theme, w, h, pitch, body_cx, body_cy, body_w, air_fade=None):
+def voxel_field(
+    theme: ThemeName, w: float, h: float, pitch: float, body_cx: float, body_cy: float,
+    body_w: float, air_fade: tuple[float, float, float] | None = None,
+) -> str:
     """A grid of voxels covering w x h, with the phantom slice centered at (body_cx, body_cy).
 
     air_fade, if given, is (x0, x1, floor): empty voxels fade from `floor` opacity
@@ -175,11 +218,11 @@ def voxel_field(theme, w, h, pitch, body_cx, body_cy, body_w, air_fade=None):
 
     mr = [(r, c) for r in range(rows) for c in range(cols) if mask[r][c]]
     focus = (round(sum(r for r, _ in mr) / len(mr)), round(sum(c for _, c in mr) / len(mr))) if mr else None
-    arms = {(focus[0] + dr, focus[1] + dc) for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1))} if focus else set()
+    arms: set[tuple[int, int]] = {(focus[0] + dr, focus[1] + dc) for dr, dc in ((-1, 0), (1, 0), (0, -1), (0, 1))} if focus else set()
 
-    groups = {}
+    groups: dict[tuple[int, str, float], list[tuple[int, int]]] = {}
 
-    def put(fill, op, r, c, layer=0):
+    def put(fill: str, op: float, r: int, c: int, layer: int = 0) -> None:
         groups.setdefault((layer, fill, op), []).append((c, r))
 
     air_fill, air_op = t["air"]
@@ -218,22 +261,21 @@ def voxel_field(theme, w, h, pitch, body_cx, body_cy, body_w, air_fade=None):
 
 # Assets
 
-def build_marks():
+def build_marks() -> None:
     tile = (f'<rect width="100" height="100" rx="22" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID))
     write("mark.svg", svg_doc(100, 100, tile, "MedMLX"), png_scale=5.12)
-    for theme in ("dark", "light"):
+    for theme in THEMES:
         write(f"mark-on-{theme}.svg", svg_doc(GRID, GRID, glyph(theme, 0, 0, GRID), "MedMLX"))
     avatar = f'<rect width="100" height="100" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID)
     write("avatar.png", svg_doc(100, 100, avatar, "MedMLX"), png_scale=10.24)
-    for theme in ("dark", "light"):
+    for theme in THEMES:
         body, w = lockup(theme, 0, 0, 120)
         write(f"lockup-on-{theme}.svg", svg_doc(w, 120, body, "MedMLX"), png_scale=2)
 
 
-def build_banners():
+def build_banners() -> None:
     W, H, R = 1600, 480, 28
-    for theme in ("dark", "light"):
-        t = THEMES[theme]
+    for theme, t in THEMES.items():
         body = [f'<clipPath id="r"><rect width="{W}" height="{H}" rx="{R}"/></clipPath>',
                 f'<rect width="{W}" height="{H}" rx="{R}" fill="{t["bg"]}"/>',
                 f'<g clip-path="url(#r)">{voxel_field(theme, W, H, 18, 1250, 240, 620, air_fade=(640, 980, 0.25))}</g>']
@@ -246,7 +288,10 @@ def build_banners():
               png_scale=1)
 
 
-def social_card(name, description, path, theme="dark", footer=None):
+def social_card(
+    name: str, description: str | None, path: Path, theme: ThemeName = "dark",
+    footer: str | None = None,
+) -> None:
     W, H = 1280, 640
     t = THEMES[theme]
     body = [f'<rect width="{W}" height="{H}" fill="{t["bg"]}"/>',
@@ -274,13 +319,13 @@ def social_card(name, description, path, theme="dark", footer=None):
     print("wrote", path)
 
 
-def build_all():
+def build_all() -> None:
     build_marks()
     build_banners()
     social_card("MedMLX", None, OUT / "social" / "MedMLX.png")
 
 
-def main():
+def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd")
     s = sub.add_parser("social", help="build repository social preview cards")
@@ -290,14 +335,15 @@ def main():
     s.add_argument("--private", action="store_true", help="include private repositories with --org")
     s.add_argument("--out", type=Path, default=OUT / "social")
     s.add_argument("--footer", help="replace the github.com link at the bottom of the card")
-    a = p.parse_args()
+    a = p.parse_args(namespace=Arguments())
     if a.cmd != "social":
         build_all()
         return
     if a.org:
         res = subprocess.run(["gh", "repo", "list", a.org, "--limit", "500", "--json", "name,description,visibility"],
                              capture_output=True, text=True, check=True)
-        repos = [r for r in json.loads(res.stdout)
+        # gh returns these fields because they are requested explicitly above.
+        repos: list[Repository] = [r for r in cast(list[ListedRepository], json.loads(res.stdout))
                  if (a.private or r["visibility"] == "PUBLIC") and not r["name"].startswith(".")]
     elif a.repo:
         repos = [{"name": a.repo, "description": a.description}]

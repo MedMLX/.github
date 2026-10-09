@@ -1,12 +1,16 @@
 """Convert text to SVG path data with HarfBuzz shaping, so wordmarks need no installed fonts."""
+from collections.abc import Mapping
+from os import PathLike
+from typing import cast
+
 import uharfbuzz as hb
 from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 
-_cache = {}
+_cache: dict[str | PathLike[str], tuple[hb.Face, int]] = {}
 
 
-def _font(path):
+def _font(path: str | PathLike[str]) -> tuple[hb.Face, int]:
     if path not in _cache:
         blob = hb.Blob.from_file_path(str(path))
         face = hb.Face(blob)
@@ -14,14 +18,19 @@ def _font(path):
     return _cache[path]
 
 
-def text_path(font_path, text, size, wght=400, tracking=0.0, x=0.0, y=0.0, features=None, extra_axes=None):
+def text_path(
+    font_path: str | PathLike[str], text: str, size: float, wght: float = 400,
+    tracking: float = 0.0, x: float = 0.0, y: float = 0.0,
+    features: dict[str, bool | int] | None = None,
+    extra_axes: Mapping[str, float] | None = None,
+) -> tuple[str, float]:
     """Return (d, advance_width) for `text` with its baseline-left at (x, y).
 
     tracking is in em units (0.01 = 1% of the font size between letters).
     """
     face, upem = _font(font_path)
     font = hb.Font(face)
-    axes = {"wght": wght}
+    axes: dict[str, float] = {"wght": wght}
     if extra_axes:
         axes.update(extra_axes)
     font.set_variations(axes)
@@ -32,7 +41,7 @@ def text_path(font_path, text, size, wght=400, tracking=0.0, x=0.0, y=0.0, featu
     scale = size / upem
     pen = SVGPathPen(None, ntos=lambda v: f"{v:.2f}".rstrip("0").rstrip("."))
     cx = 0.0
-    for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+    for info, pos in zip(buf.glyph_infos, cast(list[hb.GlyphPosition], buf.glyph_positions)):
         gx = x + (cx + pos.x_offset) * scale
         gy = y - pos.y_offset * scale
         tpen = TransformPen(pen, (scale, 0, 0, -scale, gx, gy))
@@ -42,9 +51,10 @@ def text_path(font_path, text, size, wght=400, tracking=0.0, x=0.0, y=0.0, featu
     return pen.getCommands(), width
 
 
-def cap_height(font_path, size, wght=400):
+def cap_height(font_path: str | PathLike[str], size: float, wght: float = 400) -> float:
     face, upem = _font(font_path)
     font = hb.Font(face)
     font.set_variations({"wght": wght})
-    ext = font.get_glyph_extents(font.get_nominal_glyph(ord("H")))
+    # IBM Plex contains H and its outline; the brand assets depend on that glyph.
+    ext = cast(hb.GlyphExtents, font.get_glyph_extents(cast(int, font.get_nominal_glyph(ord("H")))))
     return ext.y_bearing * size / upem

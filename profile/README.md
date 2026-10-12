@@ -5,20 +5,34 @@
   </picture>
 </p>
 
-MedMLX reimplements published medical imaging models in [MLX](https://github.com/ml-explore/mlx) so they run natively on Apple Silicon, with no PyTorch or CUDA in the inference path. The portfolio is being developed for segmentation, detection, and generation. Public model releases are listed below.
+# MedMLX
 
-### Public model releases
+Native medical imaging models on Apple Silicon, built with
+[MLX](https://github.com/ml-explore/mlx).
 
-| Repository | Description |
-|---|---|
-| [MLX-Reason-CT](https://github.com/MedMLX/MLX-Reason-CT) | MLX port of NVIDIA NV-Reason-CT for 3D CT report generation and question answering |
+- Local model execution on the Mac's Metal GPU
+- Segmentation, detection, generation, and CT reasoning
+- Numerical checks against the original model implementations
 
-### Intended use
+## Public packages
 
-MedMLX is research software. It is not a medical device and is not for clinical use. Agreement with a reference implementation shows that a port reproduces the original model's outputs. It does not establish clinical validity.
+| Repository | Purpose |
+| --- | --- |
+| [MLX-Reason-CT](https://github.com/MedMLX/MLX-Reason-CT) | NVIDIA NV-Reason-CT port for 3D CT reports and question answering |
+| [medmlx-core](https://github.com/MedMLX/medmlx-core) | Shared runtime, tensor operations, and inference helpers |
 
-MedMLX is an independent project and is not affiliated with Apple.
+Each package's README provides requirements, a quick start, supported inputs,
+and its validation scope. Model-specific checkpoint instructions and weight
+terms are documented with the model.
 
-Each repository specifies its applicable code and dependency licenses and
-retains upstream notices. Model weights and datasets have separate terms;
-check the selected model's documentation before use or redistribution.
+## Intended use
+
+Research and education. Agreement with an upstream implementation establishes
+engineering parity, not clinical validity. Model outputs require human review.
+MedMLX is not a medical device and is not affiliated with Apple.
+
+## Licenses
+
+Each repository states its applicable code and dependency licenses and retains
+upstream notices. Model weights and datasets have separate terms; follow the
+selected model's documentation before use or redistribution.

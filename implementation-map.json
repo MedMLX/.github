@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-10-16T20:01:28.640568+00:00",
+  "audit_context": {
+    "kind": "semantic_current_worktree_audit",
+    "runtime_execution_performed": false,
+    "interpretation": [
+      "Mappings describe inspected present source and retained documentation, not an exhaustive historical line diff.",
+      "Original behavior and revision claims are supported by the cited local source, documented upstream references, or retained comparisons; source_inspection is not a fresh independent upstream execution.",
+      "Repository Git revisions, checkpoint revisions, framework package versions and historical evaluated revisions are distinct identifiers.",
+      "Existing tests and result receipts establish only their documented inputs, revisions, backends and tolerances; they were not rerun here.",
+      "Preserved behavior is the identified implementation contract, not a new assertion of numerical or clinical equivalence.",
+      "Historical extraction prompts record plans; destination source and execution evidence determine implemented and verified outcomes.",
+      "Evidence paths resolve inside the current entry repository unless repository explicitly names a different entry; line endpoints are inclusive."
+    ]
+  },
+  "repository": {
+    "name": ".github",
+    "role": "organization_profile_and_brand",
+    "summary": "Organization profile, licensing notices and synthetic visual assets; no model conversion.",
+    "upstream_sources": [],
+    "changes": [
+      {
+        "category": "organization_documentation",
+        "original_behavior": "Independent model repositories expose separate tasks and licenses.",
+        "mlx_behavior": "Organization profile presents native local Metal execution, numerical comparison scope, package links and separate code/weight/data terms.",
+        "rationale": null,
+        "upstream_symbols": [],
+        "local_symbols": [
+          "profile/README.md"
+        ],
+        "evidence": [
+          {
+            "path": "profile/README.md",
+            "start_line": 10,
+            "end_line": 38
+          }
+        ],
+        "evidence_basis": "source_and_documentation",
+        "id": ".github:01"
+      },
+      {
+        "category": "brand_assets",
+        "original_behavior": "Medical-looking visual assets could otherwise depend on real image inputs.",
+        "mlx_behavior": "Authored phantom generator samples analytic tissue shapes and deterministic synthetic noise to produce shared brand imagery.",
+        "rationale": null,
+        "upstream_symbols": [],
+        "local_symbols": [
+          "phantom.tissue",
+          "phantom.sample"
+        ],
+        "evidence": [
+          {
+            "path": "tools/phantom.py",
+            "start_line": 68,
+            "end_line": 89
+          }
+        ],
+        "evidence_basis": "source_and_documentation",
+        "id": ".github:02"
+      }
+    ],
+    "preserved_behavior": [],
+    "verification": {
+      "status": "existing_evidence_reviewed_not_rerun",
+      "evidence": [
+        {
+          "path": "profile/README.md",
+          "start_line": 28,
+          "end_line": 38
+        },
+        {
+          "path": "tools/phantom.py",
+          "start_line": 68,
+          "end_line": 89
+        }
+      ],
+      "findings": [
+        "Inspected organization profile and synthetic phantom sampling.",
+        "No pretrained network, checkpoint conversion or Torch runtime is implemented here."
+      ],
+      "limits": []
+    },
+    "unresolved": [],
+    "snapshot": {
+      "repository_url": "https://github.com/MedMLX/.github",
+      "origin_url": "https://github.com/MedMLX/.github.git",
+      "head_commit": "4d662377927dd77f94f091b8f5710f1e13d5d9d1",
+      "branch": "main",
+      "working_tree_changes": []
+    },
+    "configurations": []
+  }
+}

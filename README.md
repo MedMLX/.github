@@ -31,3 +31,7 @@ Profile Markdown and existing assets do not require a model runtime.
 
 See [LICENSE](LICENSE) for the repository's code and asset terms. Model packages
 retain their own code, checkpoint, and dependency licenses.
+
+## Implementation mapping
+
+[implementation-map.json](implementation-map.json) records upstream-to-native changes, source references and qualification scope.

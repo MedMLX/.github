@@ -35,10 +35,10 @@ FONT_URLS = {
     "mono": "https://github.com/google/fonts/raw/main/ofl/ibmplexmono/IBMPlexMono-Regular.ttf",
 }
 
-# Palette: black, white and neutral grays only.
 BLACK = "#0A0A0A"
 GRAPHITE = "#262626"
-GRAY = "#8E8E93"
+CRIMSON = "#A51C30"
+GRAY = "#D5D5D5"
 SILVER = "#E5E5E5"
 WHITE = "#FFFFFF"
 MUTED_ON_DARK = "#A1A1A6"
@@ -148,10 +148,19 @@ def glyph(theme: ThemeName, x: float, y: float, size: float) -> str:
 
 
 def wordmark(theme: ThemeName, x: float, baseline: float, cap: float) -> tuple[str, float]:
+    """Draw crimson Med, themed ML, and the reference MLX gray X."""
     sans = font("sans")
     size = cap / cap_height(sans, 1, 600)
-    d, w = text_path(sans, "MedMLX", size, wght=600, tracking=-0.01, x=x, y=baseline)
-    return f'<path d="{d}" fill="{THEMES[theme]["fg"]}"/>', w
+    tracking = -0.01
+    paths: list[str] = []
+    width = 0.0
+    for label, fill in (("Med", CRIMSON), ("ML", THEMES[theme]["fg"]), ("X", GRAY)):
+        if paths:
+            width += tracking * size
+        d, w = text_path(sans, label, size, wght=600, tracking=tracking, x=x + width, y=baseline)
+        paths.append(f'<path d="{d}" fill="{fill}"/>')
+        width += w
+    return "".join(paths), width
 
 
 def lockup(theme: ThemeName, x: float, y: float, hm: float) -> tuple[str, float]:

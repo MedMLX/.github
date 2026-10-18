@@ -21,6 +21,9 @@ The [brand guide](brand/README.md) documents the palette and asset usage.
 Existing SVG and PNG assets live in [brand/](brand/).
 Generation tools live in [tools/](tools/).
 
+The [Hugging Face organization card](huggingface/README.md) uses the generated
+light and dark banners from `brand/`.
+
 ## Development
 
 The Python tools use Python 3.12 and the dependency lock in `uv.lock`.

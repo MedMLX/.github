@@ -19,13 +19,16 @@ The mark is a 3×3 grid of voxels. The plus-shaped cells are a segmentation mask
 |---|---|---|
 | Black | `#0A0A0A` | Dark background, text and mask on light |
 | White | `#FFFFFF` | Light background, text and mask on dark |
-| Gray | `#8E8E93` | Center voxel |
+| Crimson | `#A51C30` | Med in the wordmark (Harvard crimson) |
+| Gray | `#D5D5D5` | X in the wordmark and center voxel |
 | Graphite | `#262626` | Background voxels on dark |
 | Silver | `#E5E5E5` | Background voxels on light, rules on light |
 | Muted on dark | `#A1A1A6` | Secondary text on Black |
 | Muted on light | `#6E6E73` | Secondary text on White |
 
-There is no accent color.
+The wordmark uses crimson for “Med”, black on light or white on dark for “ML”, and
+the light gray sampled from the Apple MLX reference for “X”. Keep the mark and
+supporting text neutral.
 
 ## Type
 

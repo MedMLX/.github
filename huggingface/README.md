@@ -1,6 +1,7 @@
 ---
 title: MedMLX
 sdk: static
+app_file: index.html
 ---
 
 <picture>

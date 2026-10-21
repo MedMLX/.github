@@ -38,4 +38,4 @@ retain their own code, checkpoint, and dependency licenses.
 
 ## Implementation mapping
 
-[implementation-map.json](implementation-map.json) records upstream-to-native changes, source references and qualification scope.
+[Central implementation map](https://github.com/MedMLX/Med-MLX/blob/main/implementation-maps/.github.json) records upstream-to-native changes, source references and qualification scope.

@@ -28,7 +28,9 @@ light and dark banners from `brand/`. Its static renderer is
 ## Development
 
 The Python tools use Python 3.12 and the dependency lock in `uv.lock`.
-`make typecheck` runs the repository's type checks through uv.
+Prepare or update the environment explicitly with `uv sync --locked`.
+`make qa` runs Ruff and Pyright in the existing environment without syncing it.
+`make typecheck` runs Pyright and the forced annotation/import guards.
 Profile Markdown and existing assets do not require a model runtime.
 
 ## License

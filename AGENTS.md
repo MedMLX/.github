@@ -13,3 +13,15 @@ documentation rewrites.
 - Use a patched host Node for Pyright. The `pyright[nodejs]` extra was rejected
   because its wheel currently installs an older Node and can undo runtime
   security updates during environment synchronization.
+
+## Validation scope
+
+Choose the smallest check that covers the changed behavior. `make qa` runs
+static checks in the existing environment; it does not run model tests or builds.
+For behavior changes, exercise the affected tool against a small local input.
+Full suites, numerical parity, model
+exports, benchmarks, live checks and package builds are explicit tasks, used
+when the change or the user requires them. Documentation, file moves and metadata
+edits do not require full QA. Do not synchronize environments, run sibling gates,
+or repeat passed checks without a new relevant change. Mandatory full QA after
+every edit was rejected because it adds unrelated work and delays feedback.

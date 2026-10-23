@@ -8,7 +8,7 @@ reportUnnecessaryTypeIgnoreComment = "error"
 
 [dependency-groups]
 dev = [
-    "pyright[nodejs]==1.1.414",
+    "pyright==1.1.414",
     "ruff>=0.15.21",
     "CairoSVG>=2.9,<3",
     "fonttools>=4.60,<5",
@@ -21,3 +21,6 @@ extend-select = ["TID251", "ANN401"]
 [tool.ruff.lint.flake8-tidy-imports.banned-api]
 "typing.Any" = {msg = "Use a precise type and parse untyped values at the boundary."}
 "typing_extensions.Any" = {msg = "Use a precise type and parse untyped values at the boundary."}
+
+[tool.uv]
+constraint-dependencies = ["Pillow>=13,<14"]

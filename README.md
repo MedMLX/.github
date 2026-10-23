@@ -33,6 +33,9 @@ Prepare or update the environment explicitly with `uv sync --locked`.
 `make typecheck` runs Pyright and the forced annotation/import guards.
 Profile Markdown and existing assets do not require a model runtime.
 
+[SECURITY.md](SECURITY.md) provides the default private vulnerability-reporting
+route for repositories without their own security policy.
+
 ## License
 
 See [LICENSE](LICENSE) for the repository's code and asset terms. Model packages

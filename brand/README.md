@@ -10,7 +10,7 @@ The mark is a 3×3 grid of voxels. The plus-shaped cells are a segmentation mask
 | `mark.svg`, `mark.png` | Mark on a rounded tile |
 | `mark-on-dark.svg`, `mark-on-light.svg` | Mark without a tile |
 | `lockup-on-dark.svg`, `lockup-on-light.svg` | Mark and wordmark, with PNGs at 240 px tall |
-| `banner-dark.svg`, `banner-light.svg` | Organization profile header, with PNGs at 1600 × 480 |
+| `banner-dark.svg`, `banner-light.svg` | Organization profile header with a stacked wordmark directly on the background, with PNGs at 1600 × 480 |
 | `social/` | Repository social preview images, 1280 × 640 |
 
 ## Color

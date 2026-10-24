@@ -22,7 +22,7 @@ Existing SVG and PNG assets live in [brand/](brand/).
 Generation tools live in [tools/](tools/).
 
 The [Hugging Face organization card](huggingface/README.md) uses the generated
-light and dark banners from `brand/`. Its static renderer is
+dark banner from `brand/` in both page themes. Its static renderer is
 [`huggingface/index.html`](huggingface/index.html).
 
 ## Development

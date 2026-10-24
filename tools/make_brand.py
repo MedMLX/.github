@@ -317,16 +317,30 @@ def build_marks() -> None:
 
 
 def build_banners() -> None:
+    """Write profile banners with a stacked wordmark integrated into the background."""
     W, H, R = 1600, 480, 28
     for theme, t in THEMES.items():
         body = [f'<clipPath id="r"><rect width="{W}" height="{H}" rx="{R}"/></clipPath>',
                 f'<rect width="{W}" height="{H}" rx="{R}" fill="{t["bg"]}"/>',
-                f'<g clip-path="url(#r)">{voxel_field(theme, W, H, 18, 1250, 240, 620, air_fade=(640, 980, 0.25))}</g>']
-        mark, _ = lockup(theme, 96, 132, 104)
-        body.append(mark)
-        body.append(text("Native medical imaging models on Apple Silicon", 98, 318, 32, t["muted"])[0])
-        body.append(text("segmentation · detection · generation", 98, 372, 19,
-                         t["accent"], kind="mono")[0])
+                f'<g clip-path="url(#r)">{voxel_field(theme, W, H, 18, 1250, 240, 620, air_fade=(540, 1000, 0.08))}</g>']
+        sans = font("sans")
+        size = 100 / cap_height(sans, 1, 600)
+        tracking = -0.01
+        med, med_width = text("Med", 0, 0, size, CRIMSON, wght=600, tracking=tracking)
+        ml, ml_width = text("ML", 0, 0, size, t["fg"], wght=600, tracking=tracking)
+        letter_x, x_width = text("X", 0, 0, size, GRAY, wght=600, tracking=tracking)
+        row_width = ml_width + tracking * size + x_width
+        logo_width = max(med_width, row_width)
+        body.extend([
+            f'<g transform="translate({96 + (logo_width - med_width) / 2} 158)">{med}</g>',
+            f'<g transform="translate({96 + (logo_width - row_width) / 2} 280)">{ml}</g>',
+            f'<g transform="translate({96 + (logo_width - row_width) / 2 + ml_width + tracking * size} 280)">{letter_x}</g>',
+            text("Native medical imaging models", 96, 350, 31, t["fg"])[0],
+            text("on Apple Silicon", 96, 391, 31, t["muted"])[0],
+            text("segmentation · detection · generation", 96, 442, 18,
+                 t["muted"], kind="mono")[0],
+        ])
+
         write(f"banner-{theme}.svg", svg_doc(W, H, "".join(body), "MedMLX: native medical imaging models on Apple Silicon"),
               png_scale=1)
 

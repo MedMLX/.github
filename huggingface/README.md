@@ -4,10 +4,7 @@ sdk: static
 app_file: index.html
 ---
 
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://huggingface.co/spaces/MedMLX/README/resolve/main/banner-dark.png">
-  <img alt="MedMLX: native medical imaging models on Apple Silicon" src="https://huggingface.co/spaces/MedMLX/README/resolve/main/banner-light.png" width="100%">
-</picture>
+<img alt="MedMLX: native medical imaging models on Apple Silicon" src="https://huggingface.co/spaces/MedMLX/README/resolve/main/banner-dark.png" width="100%">
 
 Native medical imaging models on Apple Silicon, built with
 [MLX](https://github.com/ml-explore/mlx).

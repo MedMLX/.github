@@ -52,6 +52,7 @@ def text_path(
 
 
 def cap_height(font_path: str | PathLike[str], size: float, wght: float = 400) -> float:
+    """Return the height of the capital H at ``size``, in the same units as ``size``."""
     face, upem = _font(font_path)
     font = hb.Font(face)
     font.set_variations({"wght": wght})

@@ -7,7 +7,8 @@
         social preview card for one repository
 
     python tools/make_brand.py social --org MedMLX [--private] [--out DIR]
-        social preview cards for every repository listed by `gh repo list`
+        social preview cards for the organization's public repositories as listed by
+        `gh repo list` (--private adds private ones); names starting with "." are skipped
 
 Requires uharfbuzz, fonttools and cairosvg. IBM Plex (SIL Open Font License) is
 downloaded into tools/.fonts/ on first run. All text is converted to outlines,
@@ -98,6 +99,10 @@ GRID = 100 - 2 * PAD  # 60
 
 
 def font(kind: FontKind) -> str:
+    """Return the path of the IBM Plex font file, downloading it on first use.
+
+    The file is cached in ``tools/.fonts/``; the first call needs network access.
+    """
     path = FONT_DIR / FONT_URLS[kind].rsplit("/", 1)[1].replace("%5B", "[").replace("%5D", "]")
     if not path.exists():
         FONT_DIR.mkdir(exist_ok=True)
@@ -116,6 +121,11 @@ def svg_doc(w: float, h: float, body: str, title: str) -> str:
 
 
 def write(name: str, svg: str, png_scale: float | None = None) -> None:
+    """Write ``brand/<name>`` as SVG and, when ``png_scale`` is set, a PNG beside it.
+
+    ``name`` must end in ``.svg``; ``png_scale`` multiplies the SVG's pixel size.
+    With ``png_scale`` None only the SVG is written.
+    """
     OUT.mkdir(exist_ok=True)
     path = OUT / name
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -175,11 +185,16 @@ def text(
     s: str, x: float, y: float, size: float, fill: str, kind: FontKind = "sans",
     wght: float = 400, tracking: float = 0.0,
 ) -> tuple[str, float]:
+    """Return an SVG path for ``s`` with its baseline at ``(x, y)`` and its advance width."""
     d, w = text_path(font(kind), s, size, wght=wght, tracking=tracking, x=x, y=y)
     return f'<path d="{d}" fill="{fill}"/>', w
 
 
 def wrap(s: str, size: float, max_w: float, wght: float = 400) -> list[str]:
+    """Greedily break ``s`` into lines no wider than ``max_w`` in the sans font.
+
+    A single word wider than ``max_w`` stays on its own line.
+    """
     lines: list[str] = []
     cur = ""
     for word in s.split():
@@ -320,6 +335,12 @@ def social_card(
     name: str, description: str | None, path: Path, theme: ThemeName = "dark",
     footer: str | None = None,
 ) -> None:
+    """Render a 1280 x 640 repository social preview card to ``path`` as a PNG.
+
+    The card named ``MedMLX`` is the organization card with a fixed tagline; any
+    other name is shown as the title with ``description`` wrapped to at most three
+    lines. ``footer`` replaces the default ``github.com/MedMLX/<name>`` link.
+    """
     W, H = 1280, 640
     t = THEMES[theme]
     body = [f'<rect width="{W}" height="{H}" fill="{t["bg"]}"/>',
@@ -354,6 +375,7 @@ def build_all() -> None:
 
 
 def main() -> None:
+    """Build all assets, or the social cards selected on the command line."""
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     sub = p.add_subparsers(dest="cmd")
     s = sub.add_parser("social", help="build repository social preview cards")

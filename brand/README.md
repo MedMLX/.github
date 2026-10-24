@@ -34,8 +34,9 @@ supporting text neutral.
 
 Use the stacked wordmark for the organization avatar. “Med” is crimson, “ML” is
 black, and “X” is light gray, on a white square with room for a circular crop.
-The voxel-only avatar was replaced because it did not show the organization name
-or the crimson Med treatment. Keep the voxel mark for lockups and other icon uses.
+The stacked wordmark shows the organization name and the crimson Med treatment,
+which the voxel mark alone does not. Keep the voxel mark for lockups and other
+icon uses.
 
 ## Type
 

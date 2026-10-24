@@ -51,10 +51,10 @@ retain their own code, checkpoint, and dependency licenses.
 
 Use `LICENSE` at each Git or independently packaged project root. Keep
 attribution and complete applicable upstream code-license texts together in
-`THIRD_PARTY_NOTICES.md`, preserving their original terms and notices. Separate
-folders for simple copied code licenses were rejected because they scatter the
-terms without adding information. Varying notice filenames and loose legal
-files in `src/` likewise make attribution and packaging harder to verify.
+`THIRD_PARTY_NOTICES.md`, preserving their original terms and notices. Do not
+use separate folders for simple copied code licenses, varying notice filenames or
+loose legal files in `src/`: they scatter the terms and make attribution and
+packaging harder to verify.
 
 Genuine vendored source and bundled assets retain their source-local licenses.
 Operational model-license manifests and publisher records retain their declared

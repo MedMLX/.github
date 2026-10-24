@@ -270,13 +270,32 @@ def voxel_field(
 
 # Assets
 
+def build_avatar() -> None:
+    """Write the stacked wordmark with clear space for circular avatar crops."""
+    sans = font("sans")
+    size = 110 / cap_height(sans, 1, 600)
+    tracking = -0.01
+    parts = (("ML", BLACK), ("X", GRAY))
+    widths = [text_path(sans, label, size, wght=600, tracking=tracking)[1] for label, _ in parts]
+    width = sum(widths) + tracking * size
+    top = (512 - 110 - 32 - 110) / 2
+    body = [f'<rect width="512" height="512" fill="{WHITE}"/>']
+    med_width = text_path(sans, "Med", size, wght=600, tracking=tracking)[1]
+    body.append(text("Med", (512 - med_width) / 2, top + 110, size, CRIMSON,
+                     wght=600, tracking=tracking)[0])
+    x = (512 - width) / 2
+    for (label, fill), advance in zip(parts, widths):
+        body.append(text(label, x, 512 - top, size, fill, wght=600, tracking=tracking)[0])
+        x += advance + tracking * size
+    write("avatar.svg", svg_doc(512, 512, "".join(body), "MedMLX"), png_scale=2)
+
+
 def build_marks() -> None:
     tile = (f'<rect width="100" height="100" rx="22" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID))
     write("mark.svg", svg_doc(100, 100, tile, "MedMLX"), png_scale=5.12)
     for theme in THEMES:
         write(f"mark-on-{theme}.svg", svg_doc(GRID, GRID, glyph(theme, 0, 0, GRID), "MedMLX"))
-    avatar = f'<rect width="100" height="100" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID)
-    write("avatar.png", svg_doc(100, 100, avatar, "MedMLX"), png_scale=10.24)
+    build_avatar()
     for theme in THEMES:
         body, w = lockup(theme, 0, 0, 120)
         write(f"lockup-on-{theme}.svg", svg_doc(w, 120, body, "MedMLX"), png_scale=2)

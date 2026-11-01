@@ -311,6 +311,17 @@ def build_avatar() -> None:
     write("avatar.svg", svg_doc(512, 512, "".join(body), "MedMLX"), png_scale=2)
 
 
+def build_github_avatar() -> None:
+    """Write the horizontal wordmark with space for GitHub's circular crop."""
+    cap = 72.0
+    logo, width = wordmark("dark", 0, 0, cap)
+    x = (512 - width) / 2
+    baseline = (512 + cap) / 2
+    body = (f'<rect width="512" height="512" fill="{BLACK}"/>'
+            f'<g transform="translate({num(x)} {num(baseline)})">{logo}</g>')
+    write("github-avatar.svg", svg_doc(512, 512, body, "MedMLX"), png_scale=2)
+
+
 def build_marks() -> None:
     tile = (f'<rect width="100" height="100" rx="22" fill="{BLACK}"/>' + glyph("dark", PAD, PAD, GRID))
     write("mark.svg", svg_doc(100, 100, tile, "MedMLX"), png_scale=5.12)
@@ -323,27 +334,18 @@ def build_marks() -> None:
 
 
 def build_banners() -> None:
-    """Write profile banners with a stacked wordmark integrated into the background."""
+    """Write profile banners with a horizontal wordmark and synthetic CT image."""
     W, H, R = 1600, 480, 28
     for theme, t in THEMES.items():
         body = [f'<clipPath id="r"><rect width="{W}" height="{H}" rx="{R}"/></clipPath>',
                 f'<rect width="{W}" height="{H}" rx="{R}" fill="{t["bg"]}"/>',
                 f'<g clip-path="url(#r)">{voxel_field(theme, W, H, 18, 1250, 240, 620, air_fade=(540, 1000, 0.08))}</g>']
-        sans = font("sans")
-        size = 100 / cap_height(sans, 1, 600)
-        tracking = -0.01
-        med, med_width = text("Med", 0, 0, size, CRIMSON, wght=600, tracking=tracking)
-        ml, ml_width = text("ML", 0, 0, size, t["fg"], wght=600, tracking=tracking)
-        letter_x, x_width = text("X", 0, 0, size, GRAY, wght=600, tracking=tracking)
-        row_width = ml_width + tracking * size + x_width
-        logo_width = max(med_width, row_width)
+        logo, _ = wordmark(theme, 96, 210, 82)
         body.extend([
-            f'<g transform="translate({96 + (logo_width - med_width) / 2} 158)">{med}</g>',
-            f'<g transform="translate({96 + (logo_width - row_width) / 2} 280)">{ml}</g>',
-            f'<g transform="translate({96 + (logo_width - row_width) / 2 + ml_width + tracking * size} 280)">{letter_x}</g>',
-            text("Native medical imaging models", 96, 350, 31, t["fg"])[0],
-            text("on Apple Silicon", 96, 391, 31, t["muted"])[0],
-            text("segmentation · detection · generation", 96, 442, 18,
+            logo,
+            text("Native medical imaging models", 96, 280, 31, t["fg"])[0],
+            text("on Apple Silicon", 96, 321, 31, t["muted"])[0],
+            text("segmentation · detection · generation", 96, 373, 18,
                  t["muted"], kind="mono")[0],
         ])
 
@@ -391,6 +393,7 @@ def social_card(
 
 def build_all() -> None:
     build_marks()
+    build_github_avatar()
     build_banners()
     social_card("MedMLX", None, OUT / "social" / "MedMLX.png")
 

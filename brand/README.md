@@ -6,11 +6,12 @@ The mark is a 3×3 grid of voxels. The plus-shaped cells are a segmentation mask
 
 | File | Use |
 |---|---|
-| `avatar.svg`, `avatar.png` | Stacked crimson Med / neutral MLX wordmark on white; PNG is 1024 px square for GitHub, Hugging Face, and PyPI |
+| `avatar.svg`, `avatar.png` | Stacked crimson Med / neutral MLX wordmark on white; PNG is 1024 px square for Hugging Face and PyPI |
+| `github-avatar.svg`, `github-avatar.png` | Horizontal MedMLX wordmark on black; PNG is 1024 px square for the GitHub organization |
 | `mark.svg`, `mark.png` | Mark on a rounded tile |
 | `mark-on-dark.svg`, `mark-on-light.svg` | Mark without a tile |
 | `lockup-on-dark.svg`, `lockup-on-light.svg` | Mark and wordmark, with PNGs at 240 px tall |
-| `banner-dark.svg`, `banner-light.svg` | Organization profile header with a stacked wordmark directly on the background, with PNGs at 1600 × 480 |
+| `banner-dark.svg`, `banner-light.svg` | Organization profile header with a horizontal wordmark directly on the background, with PNGs at 1600 × 480 |
 | `social/` | Repository social preview images, 1280 × 640 |
 
 ## Color
@@ -32,11 +33,10 @@ supporting text neutral.
 
 ## Avatar
 
-Use the stacked wordmark for the organization avatar. “Med” is crimson, “ML” is
-black, and “X” is light gray, on a white square with room for a circular crop.
-The stacked wordmark shows the organization name and the crimson Med treatment,
-which the voxel mark alone does not. Keep the voxel mark for lockups and other
-icon uses.
+The GitHub organization avatar uses the horizontal wordmark on black, with room
+for a circular crop. The stacked wordmark on white remains available for other
+services. In both versions “Med” is crimson and “X” is light gray. Keep the voxel
+mark for lockups and other icon uses.
 
 ## Type
 

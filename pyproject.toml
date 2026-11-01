@@ -1,0 +1,29 @@
+[tool.pyright]
+include = ["tools", "typings"]
+stubPath = "typings"
+pythonVersion = "3.13"
+typeCheckingMode = "strict"
+enableTypeIgnoreComments = false
+reportUnnecessaryTypeIgnoreComment = "error"
+
+[dependency-groups]
+dev = [
+    "pyright==1.1.414",
+    "ruff>=0.15.21",
+    "CairoSVG>=2.9,<3",
+    "fonttools>=4.60,<5",
+    "uharfbuzz>=0.56,<0.57",
+]
+
+[tool.ruff.lint]
+extend-select = ["TID251", "TID252", "ANN401"]
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"typing.Any" = {msg = "Use a precise type and parse untyped values at the boundary."}
+"typing_extensions.Any" = {msg = "Use a precise type and parse untyped values at the boundary."}
+
+[tool.uv]
+constraint-dependencies = ["Pillow>=13,<14"]

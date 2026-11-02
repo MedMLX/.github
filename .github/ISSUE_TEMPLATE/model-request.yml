@@ -1,12 +1,13 @@
 name: Request a model
 description: Suggest a medical imaging model to port to MedMLX for Apple Silicon.
 title: "[Model request]: "
+labels: [model-request, needs-review]
 body:
   - type: markdown
     attributes:
       value: |
         Suggest a model you would like to run locally on your Mac with MedMLX.
-        Check the [model catalog](https://medmlx.org/models/) and [existing requests](https://github.com/MedMLX/.github/issues?q=is%3Aissue%20%22Model%20request%22%20in%3Atitle) first. If there is already a request, add your use case to that thread.
+        Check the [model catalog](https://medmlx.org/models/) and [existing requests](https://github.com/MedMLX/.github/issues?q=is%3Aissue%20label%3Amodel-request) first. If there is already a request, add your use case to that thread.
         Requests help us assess useful ports; they do not guarantee implementation or a release date.
 
   - type: input

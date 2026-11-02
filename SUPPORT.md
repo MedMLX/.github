@@ -8,9 +8,13 @@ Use the [model request form](https://github.com/MedMLX/.github/issues/new?templa
 Include the model's repository or paper and your research use case. Links to
 weights and license details help us assess a port.
 
-Check [existing requests](https://github.com/MedMLX/.github/issues?q=is%3Aissue%20%22Model%20request%22%20in%3Atitle)
+Check [existing requests](https://github.com/MedMLX/.github/issues?q=is%3Aissue%20label%3Amodel-request)
 first. If the model is already requested, add your use case to that thread.
 Requests do not guarantee a port or a release date.
+
+Requests start with `needs-review`. Maintainers use `planned`, `in-progress`,
+`blocked` and `released` to show progress. Follow the issue for updates; a
+`planned` label does not set a release date.
 
 ## Ask a question
 

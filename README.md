@@ -1,6 +1,6 @@
 # MedMLX
 
-Organization profile and shared branding for native medical imaging on Apple Silicon.
+Community support, organization profile and shared branding for native medical imaging on Apple Silicon.
 
 [Organization](https://github.com/MedMLX) · [Website](https://medmlx.org) · [Hugging Face](https://huggingface.co/MedMLX)
 
@@ -13,6 +13,8 @@ Organization profile and shared branding for native medical imaging on Apple Sil
 | Path | Purpose |
 | :--- | :--- |
 | [profile/README.md](profile/README.md) | GitHub organization landing page |
+| [SUPPORT.md](SUPPORT.md) | Model requests, questions, bug reports and shared work |
+| [.github/ISSUE_TEMPLATE/](.github/ISSUE_TEMPLATE/) | Default model request and bug report forms, plus discussion links |
 | [brand/](brand/) | Logos, banners and social images |
 | [brand guide](brand/README.md) | Colors, typography and asset usage |
 | [huggingface/](huggingface/) | Hugging Face organization card |

@@ -25,6 +25,13 @@ Use `medmlx describe <model>` for its inputs and examples. See the package's
 [setup guide](https://github.com/MedMLX/medmlx/blob/main/docs/setup.md) for current
 automatic-weight support and source-only release features.
 
+## Community
+
+- [Request a model](https://github.com/MedMLX/.github/issues/new?template=model-request.yml) to run on your Mac.
+- [Ask a question](https://github.com/MedMLX/.github/discussions/categories/q-a) about installation, model selection or usage.
+- [Report a bug](https://github.com/MedMLX/.github/blob/main/SUPPORT.md#report-a-bug) in the affected package.
+- [Share your work](https://github.com/MedMLX/.github/discussions/categories/show-and-tell) with MedMLX.
+
 ## Models and tools
 
 | Repository | Purpose |

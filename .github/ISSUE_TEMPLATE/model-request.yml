@@ -2,6 +2,7 @@ name: Request a model
 description: Suggest a medical imaging model to port to MedMLX for Apple Silicon.
 title: "[Model request]: "
 labels: [model-request, needs-review]
+assignees: [sandovaljoseph]
 body:
   - type: markdown
     attributes:

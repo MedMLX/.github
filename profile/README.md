@@ -51,9 +51,9 @@ automatic-weight support and source-only release features.
 | [mlx-segment-ct](https://github.com/MedMLX/mlx-segment-ct) | Prompted CT segmentation |
 | [flexray-mlx](https://github.com/MedMLX/flexray-mlx) | Radiograph segmentation |
 | [medsam2-mlx](https://github.com/MedMLX/medsam2-mlx) | Prompted masks and propagation |
+| [sam3-mlx](https://github.com/MedMLX/sam3-mlx) | Text- and box-prompted image segmentation |
 | [lesiondiffusion-mlx](https://github.com/MedMLX/lesiondiffusion-mlx) | Synthetic CT lesions |
 | [mlx-generate-ctmr](https://github.com/MedMLX/mlx-generate-ctmr) | Synthetic CT and MRI |
-| [mlx-radiomics](https://github.com/MedMLX/mlx-radiomics) | Radiomics and voxel maps |
 | [med-vlm-mlx](https://github.com/MedMLX/med-vlm-mlx) | Medical vision-language models |
 
 For research and education. Outputs require human review.

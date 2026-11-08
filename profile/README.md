@@ -56,5 +56,4 @@ automatic-weight support and source-only release features.
 | [mlx-generate-ctmr](https://github.com/MedMLX/mlx-generate-ctmr) | Synthetic CT and MRI |
 | [med-vlm-mlx](https://github.com/MedMLX/med-vlm-mlx) | Medical vision-language models |
 
-For research and education. Outputs require human review.
 Code, model weights and datasets retain their own licenses; see each repository’s notices.

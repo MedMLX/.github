@@ -10,11 +10,8 @@ weights and license details help us assess a port.
 
 Check [existing requests](https://github.com/MedMLX/.github/issues?q=is%3Aissue%20label%3Amodel-request)
 first. If the model is already requested, add your use case to that thread.
-Requests do not guarantee a port or a release date.
-
-Requests start with `needs-review`. Maintainers use `planned`, `in-progress`,
-`blocked` and `released` to show progress. Follow the issue for updates; a
-`planned` label does not set a release date.
+Follow the issue for updates. Labels show progress: `needs-review`, `planned`,
+`in-progress`, `blocked` and `released`.
 
 ## Ask a question
 

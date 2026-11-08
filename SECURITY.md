@@ -18,5 +18,4 @@ conversion, a model checkpoint or a dataset. These components have separate
 owners and terms. For an upstream component, include its publisher and exact
 version or revision so maintainers can coordinate with the upstream project.
 
-Use the affected repository's documented local checks. Model parity and
-engineering tests do not establish clinical validity.
+Include results from the affected repository's local checks when available.

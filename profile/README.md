@@ -17,9 +17,8 @@ Install MedMLX, then segment a CT scan in a working folder:
 
 ```sh
 uv tool install --python 3.13 "medmlx[all,mcp]"
-mkdir -p ~/medmlx-work && cp /path/to/ct.nii.gz ~/medmlx-work/
-echo '{"image_path": "ct.nii.gz", "output_dir": "segment-ct"}' > ~/medmlx-work/arguments.json
-medmlx run mlx-segment-ct --arguments arguments.json --root ~/medmlx-work
+mkdir -p ~/medmlx-work && cd ~/medmlx-work && cp /path/to/ct.nii.gz .
+medmlx run mlx-segment-ct --arg image_path=ct.nii.gz output_dir=segment-ct
 ```
 
 The mask is written to `~/medmlx-work/segment-ct/`. Weights download on first use.

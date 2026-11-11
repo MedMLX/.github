@@ -39,7 +39,7 @@ offline weights.
 | [nnunet-mlx](https://github.com/MedMLX/nnunet-mlx) | Organs, lesions and brain tumors (nnU-Net v2) | CT, PET/CT, brain MRI |
 | [synthseg-mlx](https://github.com/MedMLX/synthseg-mlx) | Brain segmentation and parcellation | Brain MRI, CT |
 | [swin-unetr-mlx](https://github.com/MedMLX/swin-unetr-mlx) | 13 abdominal organs | Contrast CT |
-| [segresnet-mlx](https://github.com/MedMLX/segresnet-mlx) | Brain tumors and renal structures | Brain MRI, CT |
+| [segresnet-mlx](https://github.com/MedMLX/segresnet-mlx) | Renal arteries, veins, ureters, tumors and parenchyma | Multiphase CT |
 | [unest-mlx](https://github.com/MedMLX/unest-mlx) | Kidney cortex, medulla and collecting system | CT |
 | [flexray-mlx](https://github.com/MedMLX/flexray-mlx) | Radiograph anatomy | X-ray |
 | [flexible-unet-mlx](https://github.com/MedMLX/flexible-unet-mlx) | Surgical tools | Endoscopy |
